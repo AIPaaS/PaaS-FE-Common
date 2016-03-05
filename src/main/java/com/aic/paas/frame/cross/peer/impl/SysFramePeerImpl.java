@@ -252,7 +252,7 @@ public class SysFramePeerImpl implements SysFramePeer {
 		User user = Local.getUser();
 		if(user == null) throw new ServiceException(" the user is not login! ");
 		boolean ba = sysFrameSvc.verifyModuId(user.getId(), modu.getId());
-		if(!ba) throw new ServiceException(" You do not have permission to access the module '["+modu.getModuCode()+"] "+modu.getModuName()+"'!  ");
+		if(!ba) throw new ServiceException("该用户没有权限["+modu.getModuCode()+"] "+modu.getModuName()+"!  ");
 		
 		
 		String url = modu.getModuUrl();
