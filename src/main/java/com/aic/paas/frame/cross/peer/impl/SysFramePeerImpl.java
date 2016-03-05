@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,6 +37,8 @@ import com.aic.paas.frame.cross.rest.SysFrameSvc;
 import com.aic.paas.frame.util.ComponentUtil;
 import com.aic.paas.frame.util.RequestKey;
 import com.binary.core.util.BinaryUtils;
+import com.binary.framework.Local;
+import com.binary.framework.bean.User;
 import com.binary.framework.exception.ServiceException;
 
 public class SysFramePeerImpl implements SysFramePeer {
@@ -243,11 +244,16 @@ public class SysFramePeerImpl implements SysFramePeer {
 		SysModu modu = moduInfo.getModu();
 		
 		//验证权限
-		AuthResCache cache = getAuthResCache(request);
-		Set<Long> moduIds = sysAuthResPeer.getAuthModuIds(cache);
-		if(!moduIds.contains(modu.getId())) {
-			throw new ServiceException(" You do not have permission to access the module '["+modu.getModuCode()+"] "+modu.getModuName()+"'!  ");
-		}
+//		AuthResCache cache = getAuthResCache(request);
+//		Set<Long> moduIds = sysAuthResPeer.getAuthModuIds(cache);
+//		if(!moduIds.contains(modu.getId())) {
+//			throw new ServiceException(" You do not have permission to access the module '["+modu.getModuCode()+"] "+modu.getModuName()+"'!  ");
+//		}
+		User user = Local.getUser();
+		if(user == null) throw new ServiceException(" the user is not login! ");
+		boolean ba = sysFrameSvc.verifyModuId(user.getId(), modu.getId());
+		if(!ba) throw new ServiceException(" You do not have permission to access the module '["+modu.getModuCode()+"] "+modu.getModuName()+"'!  ");
+		
 		
 		String url = modu.getModuUrl();
 		String param = modu.getModuParam();
