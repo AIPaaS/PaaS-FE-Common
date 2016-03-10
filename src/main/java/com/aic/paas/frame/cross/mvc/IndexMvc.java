@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.binary.core.http.URLResolver;
+import com.binary.framework.util.ControllerUtils;
 
 
 @Controller
@@ -46,6 +47,24 @@ public class IndexMvc {
 		
 		return forward;
 	}
+	
+	
+	
+	
+	@RequestMapping("/invalid")
+	public void invalid(HttpServletRequest request, HttpServletResponse response) {
+		logger.info(" invalid session ... ");
+		
+		try {
+			HttpSession session = request.getSession(false);
+			if(session != null) {
+				session.invalidate();
+			}
+		}catch(Exception e) {
+		}
+		ControllerUtils.returnJson(request, response, true);
+	}
+	
 	
 	
 }
