@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.binary.core.http.URLResolver;
-import com.binary.core.util.BinaryUtils;
 
 
 @Controller
@@ -28,8 +27,8 @@ public class IndexMvc {
 	
 	
 	@RequestMapping("/refreshRelogin")
-	public String refreshRelogin(HttpServletRequest request, HttpServletResponse response) {
-		logger.info(" refresh relogin ... ");
+	public String refreshRelogin(HttpServletRequest request, HttpServletResponse response, String beforeUrl) {
+		logger.info(" refresh relogin ... " + beforeUrl);
 		
 		try {
 			HttpSession session = request.getSession(false);
@@ -39,15 +38,13 @@ public class IndexMvc {
 		}catch(Exception e) {
 		}
 		
-		
-		StringBuffer beforeUrl = request.getRequestURL();
-		String qs = request.getQueryString();
-		if(!BinaryUtils.isEmpty(qs)) {
-			beforeUrl.append("?").append(qs);
+		String forward = "redirect:/index.jsp";
+		if(beforeUrl != null) {
+			if(beforeUrl.indexOf('%') > -1) beforeUrl = URLResolver.decode(beforeUrl);
+			forward += "?beforeUrl=" + URLResolver.encode(beforeUrl);
 		}
 		
-		String url = "/index.jsp?beforeUrl=" + URLResolver.encode(beforeUrl.toString());
-		return "redirect:"+url;
+		return forward;
 	}
 	
 	
