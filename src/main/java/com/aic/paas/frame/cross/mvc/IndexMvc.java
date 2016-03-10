@@ -4,14 +4,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.binary.framework.util.ControllerUtils;
+import com.binary.core.http.URLResolver;
+import com.binary.core.util.BinaryUtils;
 
 
 @Controller
 public class IndexMvc {
+	private static Logger logger = LoggerFactory.getLogger(IndexMvc.class);
 
 	
 	@RequestMapping("/")
@@ -23,8 +27,10 @@ public class IndexMvc {
 	
 	
 	
-	@RequestMapping("/invalid")
-	public void invalid(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/refreshRelogin")
+	public String refreshRelogin(HttpServletRequest request, HttpServletResponse response) {
+		logger.info(" refresh relogin ... ");
+		
 		try {
 			HttpSession session = request.getSession(false);
 			if(session != null) {
@@ -32,7 +38,16 @@ public class IndexMvc {
 			}
 		}catch(Exception e) {
 		}
-		ControllerUtils.returnJson(request, response, true);
+		
+		
+		StringBuffer beforeUrl = request.getRequestURL();
+		String qs = request.getQueryString();
+		if(!BinaryUtils.isEmpty(qs)) {
+			beforeUrl.append("?").append(qs);
+		}
+		
+		String url = "/index.jsp?beforeUrl=" + URLResolver.encode(beforeUrl.toString());
+		return "redirect:"+url;
 	}
 	
 	
