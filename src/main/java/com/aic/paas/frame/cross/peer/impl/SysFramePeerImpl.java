@@ -349,6 +349,10 @@ public class SysFramePeerImpl implements SysFramePeer {
 
 
 	
+	@Override
+	public boolean verifyModuCode(Long opId, String moduCode) {
+		return sysFrameSvc.verifyModuCode(opId, moduCode);
+	}
 	
 	
 }

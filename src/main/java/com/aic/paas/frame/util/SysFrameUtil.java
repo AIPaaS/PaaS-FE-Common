@@ -239,7 +239,14 @@ public class SysFrameUtil {
 	
 	
 	
-		
+	/**
+	 * 跟据模块ID获取模块
+	 * @param moduId
+	 * @return
+	 */
+	public static boolean verifyModuCode(Long opId,String  moduCode) {		
+		return  getPeer().verifyModuCode(opId, moduCode);
+	}
 	
 	
 }
