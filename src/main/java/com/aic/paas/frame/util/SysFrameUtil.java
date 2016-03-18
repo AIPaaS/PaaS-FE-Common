@@ -240,7 +240,7 @@ public class SysFrameUtil {
 	
 	
 	/**
-	 * 跟据模块ID获取模块
+	 * 跟据模块Code 验证权限
 	 * @param moduId
 	 * @return
 	 */
@@ -248,5 +248,13 @@ public class SysFrameUtil {
 		return  getPeer().verifyModuCode(opId, moduCode);
 	}
 	
+	/**
+	 * 跟据模块ID验证权限
+	 * @param moduId
+	 * @return
+	 */
+	public static boolean verifyModuId(Long opId,Long  moduId) {		
+		return  getPeer().verifyModuId(opId, moduId);
+	}
 	
 }
