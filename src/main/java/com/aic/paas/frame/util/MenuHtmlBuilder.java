@@ -51,7 +51,12 @@ public abstract class MenuHtmlBuilder {
 		
 		sb.append("<li ").append(active?(top&&leaf?"class=\"active\"":(leaf?"":"class=\"open active\"")):"").append(">");
 		if(leaf) {
-			sb.append("<a ").append(active?"class=\"active\"":"").append(" href=\"").append(contextPath).append("/dispatch/mi/").append(menu.getModuId()).append("\">");
+			if(menu.getIsLeaf() == 1){
+				sb.append("<a ").append(active?"class=\"active\"":"").append(" href=\"").append(contextPath).append("/dispatch/mi/").append(menu.getModuId()).append("\">");
+			}else{
+				sb.append("<a href=\"###\" class=\"dropdown-toggle\">");
+			}
+			
 		}else {
 			sb.append("<a href=\"###\" class=\"dropdown-toggle\">");
 		}
